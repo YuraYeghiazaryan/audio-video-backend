@@ -2,14 +2,11 @@ package com.example.zoombackend.service;
 
 import com.example.zoombackend.model.ConnectionOptions;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.time.Instant;
-import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
 
@@ -26,7 +23,7 @@ public class ZoomService {
         Date currentDate = new Date();
 
 
-        SecretKey hmacKey = new SecretKeySpec(secret.getBytes(), SignatureAlgorithm.HS256.getJcaName());
+        SecretKey hmacKey = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
         long iat = currentDate.getTime() / 1000;
         String jwt = Jwts.builder()
                 .header()
