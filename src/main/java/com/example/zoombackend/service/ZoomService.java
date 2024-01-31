@@ -27,6 +27,7 @@ public class ZoomService {
 
 
         SecretKey hmacKey = new SecretKeySpec(secret.getBytes(), SignatureAlgorithm.HS256.getJcaName());
+        long iat = currentDate.getTime() / 1000;
         String jwt = Jwts.builder()
                 .header()
                 .add(Map.of("alg", "HS256", "typ", "JWT"))
@@ -35,8 +36,9 @@ public class ZoomService {
                 .claim("role_type", 1)
                 .claim("tpc", sessionName)
                 .claim("version", 1)
-                .issuedAt(currentDate)
-                .expiration(Date.from(Instant.ofEpochSecond(currentDate.getTime() + 60*60)))
+                .claim("iat", iat)
+                .claim("exp", iat + 60*60)
+                .encodePayload(true)
                 .signWith(hmacKey)
                 .compact();
 
