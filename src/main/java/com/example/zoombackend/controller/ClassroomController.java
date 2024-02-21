@@ -5,7 +5,7 @@ import com.example.zoombackend.service.ClassroomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/classroom")
@@ -16,7 +16,7 @@ public class ClassroomController {
 
     @GetMapping("/{roomNumber}/users")
     @CrossOrigin
-    public List<User> getAllUsers(@PathVariable int roomNumber) {
+    public Set<User> getAllUsers(@PathVariable int roomNumber) {
         return classroomService.getAllUsers(roomNumber);
     }
 

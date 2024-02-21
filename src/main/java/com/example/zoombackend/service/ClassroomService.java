@@ -8,16 +8,17 @@ import java.util.*;
 @Service
 public class ClassroomService {
 
-    private final Map<Integer, List<User>> classrooms = new HashMap<>();
+    private final Map<Integer, Set<User>> classrooms = new HashMap<>();
 
     public void addUserToClassroom(int roomNumber, User newUser) {
         if (!classrooms.containsKey(roomNumber)) {
-            classrooms.put(roomNumber, new ArrayList<>());
+            classrooms.put(roomNumber, new HashSet<>());
         }
+
         classrooms.get(roomNumber).add(newUser);
     }
 
-    public List<User> getAllUsers(int roomNumber) {
-        return classrooms.getOrDefault(roomNumber, Collections.emptyList());
+    public Set<User> getAllUsers(int roomNumber) {
+        return classrooms.getOrDefault(roomNumber, Collections.emptySet());
     }
 }
