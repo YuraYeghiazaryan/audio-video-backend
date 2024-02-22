@@ -14,12 +14,11 @@ public class User {
     @EqualsAndHashCode.Include
     private Role role;
     private String username;
-    private ZoomUser zoomUser;
+    private Object zoomParticipant;
 
     public User(String username, Role role) {
         this.id = Objects.hashCode(username + role);
         this.username = username;
         this.role = role;
-        this.zoomUser = new ZoomUser();
     }
 }
