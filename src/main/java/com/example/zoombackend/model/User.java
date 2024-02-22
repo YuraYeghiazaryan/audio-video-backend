@@ -14,7 +14,7 @@ public class User {
     @EqualsAndHashCode.Include
     private Role role;
     private String username;
-    private Object zoomParticipant;
+    private ZoomUser zoomUser;
 
     public User(String username, Role role) {
         this.id = Objects.hashCode(username + role);
