@@ -11,7 +11,6 @@ public class User {
 
     @EqualsAndHashCode.Include
     private long id;
-    @EqualsAndHashCode.Include
     private Role role;
     private String username;
     private ZoomUser zoomUser;
