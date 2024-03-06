@@ -13,6 +13,7 @@ public class User {
     private long id;
     private Role role;
     private String username;
+    private RoomConnection roomConnection;
     private ZoomUser zoomUser;
 
     public User(String username, Role role) {
