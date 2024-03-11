@@ -1,7 +1,10 @@
 package com.example.zoombackend.model;
 
-public record ZoomUser (
-        long id,
-        boolean isVideoOn,
-        boolean isAudioOn
-) {}
+import lombok.Data;
+
+@Data
+public class ZoomUser {
+    private long id;
+    private boolean isVideoOn;
+    private boolean isAudioO;
+}
