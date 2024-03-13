@@ -37,6 +37,13 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
+        <!-- Amazon Chime -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-chimesdkmeetings</artifactId>
+            <version>1.12.647</version>
+        </dependency>
+
         <!-- jjwt -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

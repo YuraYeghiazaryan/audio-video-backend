@@ -20,6 +20,6 @@ public class UserService {
                 .stream()
                 .filter((User user) -> user.getId() == userId)
                 .findFirst()
-                .ifPresent((User user) -> user.getZoomUser().setVideoOn(isOn));
+                .ifPresent((User user) -> user.getAudioVideoUser().setVideoOn(isOn));
     }
 }

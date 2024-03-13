@@ -14,7 +14,7 @@ public class User {
     private Role role;
     private String username;
     private RoomConnection roomConnection;
-    private ZoomUser zoomUser;
+    private AudioVideoUser audioVideoUser;
 
     public User(String username, Role role) {
         this.id = Objects.hashCode(username + role);
