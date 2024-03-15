@@ -11,12 +11,16 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Repository
-public class AmazonMeetingRepository {
+public class ChimeMeetingRepository {
     private final Map<Integer, ChimeMeeting> chimeMeetingsMap = new HashMap<>();
 
     public ChimeMeeting save(ChimeMeeting chimeMeeting) {
         this.chimeMeetingsMap.put(chimeMeeting.getRoomNumber(), chimeMeeting);
         return chimeMeeting;
+    }
+
+    public void deleteByRoomNumber(int roomNumber) {
+        this.chimeMeetingsMap.remove(roomNumber);
     }
 
     public Optional<ChimeMeeting> findByRoomNumber(int roomNumber) {

@@ -25,6 +25,7 @@ public class AudioVideoController {
 
     public AudioVideoController(
             @Qualifier("chimeService")
+//            @Qualifier("zoomService")
             AudioVideoService audioVideoService,
             SimpMessagingTemplate simpMessagingTemplate
     ) {
@@ -41,7 +42,7 @@ public class AudioVideoController {
         return this.audioVideoService.getConnectionOptions(roomNumber, username);
     }
 
-    @GetMapping("/group-session/connection-options")
+    @GetMapping("/sub-session/connection-options")
     @CrossOrigin
     public ConnectionOptions createAttendee(
             @RequestParam int roomNumber,
