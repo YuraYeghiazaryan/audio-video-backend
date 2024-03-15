@@ -1,6 +1,8 @@
-package com.example.zoombackend.service;
+package com.example.zoombackend.service.audioVideo;
 
-import com.example.zoombackend.model.ConnectionOptions;
+import com.example.zoombackend.model.Group;
+import com.example.zoombackend.model.connectionOptions.ConnectionOptions;
+import com.example.zoombackend.model.connectionOptions.ZoomConnectionOptions;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -8,10 +10,11 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Service
-public class ZoomService {
+public class ZoomService implements AudioVideoService {
     @Value("${zoom.api.app.key}")
     private String key;
     @Value("${zoom.api.app.secret}")
@@ -19,9 +22,14 @@ public class ZoomService {
     @Value("${zoom.api.session.passcode}")
     private String sessionPasscode;
 
-    public ConnectionOptions getConnectionOptions(String sessionName, String username) {
-        Date currentDate = new Date();
+    @Override
+    public ConnectionOptions getConnectionOptions(int roomNumber, String username) {
+        return null;
+    }
 
+    public ZoomConnectionOptions getConnectionOptions(int roomNumber, long groupId, String username) {
+        Date currentDate = new Date();
+        String sessionName = roomNumber + "_" + groupId;
 
         SecretKey hmacKey = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
         long iat = currentDate.getTime() / 1000;
@@ -39,12 +47,17 @@ public class ZoomService {
                 .signWith(hmacKey)
                 .compact();
 
-        return ConnectionOptions
+        return ZoomConnectionOptions
                 .builder()
                 .videoSDKJWT(jwt)
                 .username(username)
                 .sessionName(sessionName)
                 .sessionPasscode(sessionPasscode)
                 .build();
+    }
+
+    @Override
+    public void audioVideoGroupsChanged(int roomNumber, List<Group> groups) {
+        /* BLANK */
     }
 }
