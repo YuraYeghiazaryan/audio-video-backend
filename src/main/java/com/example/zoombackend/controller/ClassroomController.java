@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
 import java.util.Set;
 
 @RestController
@@ -26,6 +27,18 @@ public class ClassroomController {
     @CrossOrigin
     public Set<User> getAllUsers(@PathVariable int roomNumber) {
         return classroomService.getAllUsers(roomNumber);
+    }
+
+    @PostMapping("/{roomNumber}/game-mode")
+    @CrossOrigin
+    public void gameModeStateChanged(@PathVariable int roomNumber, @RequestBody Object body) {
+        simpMessagingTemplate.convertAndSend("/topic/" + roomNumber + "/game-mode", body);
+    }
+
+    @PostMapping("/{roomNumber}/team-talk")
+    @CrossOrigin
+    public void teamTalkStateChanged(@PathVariable int roomNumber, @RequestBody Object body) {
+        simpMessagingTemplate.convertAndSend("/topic/" + roomNumber + "/team-talk", body);
     }
 
     @PostMapping("/{roomNumber}/user-joined")

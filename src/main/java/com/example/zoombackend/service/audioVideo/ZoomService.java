@@ -23,13 +23,9 @@ public class ZoomService implements AudioVideoService {
     private String sessionPasscode;
 
     @Override
-    public ConnectionOptions getConnectionOptions(int roomNumber, String username) {
-        return null;
-    }
-
-    public ZoomConnectionOptions getConnectionOptions(int roomNumber, long groupId, String username) {
+    public ZoomConnectionOptions getConnectionOptions(int roomNumber, String username) {
         Date currentDate = new Date();
-        String sessionName = roomNumber + "_" + groupId;
+        String sessionName = String.valueOf(roomNumber);
 
         SecretKey hmacKey = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
         long iat = currentDate.getTime() / 1000;
@@ -54,6 +50,11 @@ public class ZoomService implements AudioVideoService {
                 .sessionName(sessionName)
                 .sessionPasscode(sessionPasscode)
                 .build();
+    }
+
+    @Override
+    public ConnectionOptions getConnectionOptions(int roomNumber, long groupId, String username) {
+        return null;
     }
 
     @Override
