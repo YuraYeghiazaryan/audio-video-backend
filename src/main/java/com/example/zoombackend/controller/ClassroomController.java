@@ -41,6 +41,24 @@ public class ClassroomController {
         simpMessagingTemplate.convertAndSend("/topic/" + roomNumber + "/team-talk", body);
     }
 
+    @PostMapping("/{roomNumber}/private-talk")
+    @CrossOrigin
+    public void privateTalkStateChanged(@PathVariable int roomNumber, @RequestBody Object body) {
+        simpMessagingTemplate.convertAndSend("/topic/" + roomNumber + "/private-talk", body);
+    }
+
+    @PostMapping("/{roomNumber}/add-user-to-private-talk")
+    @CrossOrigin
+    public void addUserToPrivateTalk(@PathVariable int roomNumber, @RequestBody Object body) {
+        simpMessagingTemplate.convertAndSend("/topic/" + roomNumber + "/add-user-to-private-talk", body);
+    }
+
+    @PostMapping("/{roomNumber}/remove-user-from-private-talk")
+    @CrossOrigin
+    public void removeUserFromPrivateTalk(@PathVariable int roomNumber, @RequestBody Object body) {
+        simpMessagingTemplate.convertAndSend("/topic/" + roomNumber + "/remove-user-from-private-talk", body);
+    }
+
     @PostMapping("/{roomNumber}/user-joined")
     @CrossOrigin
     public void userAdded(@PathVariable int roomNumber, @RequestBody User user) {

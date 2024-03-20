@@ -22,4 +22,12 @@ public class UserService {
                 .findFirst()
                 .ifPresent((User user) -> user.getAudioVideoUser().setVideoOn(isOn));
     }
+
+    public void setUserAudioState(int roomNumber, long userId, boolean isOn) {
+        classroomService.getAllUsers(roomNumber)
+                .stream()
+                .filter((User user) -> user.getId() == userId)
+                .findFirst()
+                .ifPresent((User user) -> user.getAudioVideoUser().setAudioOn(isOn));
+    }
 }

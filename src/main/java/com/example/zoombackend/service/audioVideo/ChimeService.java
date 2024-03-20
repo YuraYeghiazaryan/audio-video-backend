@@ -30,34 +30,25 @@ public class ChimeService implements AudioVideoService {
 
     @Override
     public ConnectionOptions getConnectionOptions(int roomNumber, String username) {
-        ChimeMeeting chimeMeeting = this.createMeeting(roomNumber);
+        synchronized (this) {
+            ChimeMeeting chimeMeeting = this.createMeeting(roomNumber);
 
-        CreateMeetingResult createMeetingResult = chimeMeeting.getMainRoom().getCreateMeetingResult();
-        CreateAttendeeResult createAttendeeResult = createChimeAttendee(roomNumber, username);
-
-        return new ChimeConnectionOptions(createMeetingResult, createAttendeeResult);
+            CreateMeetingResult createMeetingResult = chimeMeeting.getMainRoom().getCreateMeetingResult();
+            CreateAttendeeResult createAttendeeResult = createChimeAttendee(roomNumber, username);
+            return new ChimeConnectionOptions(createMeetingResult, createAttendeeResult);
+        }
     }
 
     @Override
    public ConnectionOptions getConnectionOptions(int roomNumber, long groupId, String username) {
-        ChimeMeeting chimeMeeting = this.addSubRoomToMeeting(roomNumber, groupId);
+        synchronized (this) {
+            ChimeMeeting chimeMeeting = this.addSubRoomToMeeting(roomNumber, groupId);
 
-        CreateMeetingResult createMeetingResult = chimeMeeting.getMainRoom().getCreateMeetingResult();
-        CreateAttendeeResult createAttendeeResult = createChimeAttendee(roomNumber, groupId, username);
+            CreateMeetingResult createMeetingResult = chimeMeeting.getSubRooms().get(groupId).getCreateMeetingResult();
+            CreateAttendeeResult createAttendeeResult = createChimeAttendee(roomNumber, groupId, username);
 
-        return new ChimeConnectionOptions(createMeetingResult, createAttendeeResult);
-   }
-
-    @Override
-   public void audioVideoGroupsChanged(int roomNumber, List<Group> groups) {
-        this.chimeMeetingRepository.findByRoomNumber(roomNumber)
-                .ifPresentOrElse((ChimeMeeting chimeMeeting) -> {
-                    chimeMeeting.getSubRooms().values().forEach(this::deleteRoom);
-                }, () -> {
-                    throw new IllegalStateException();
-                });
-
-        groups.forEach((Group group) -> this.addSubRoomToMeeting(roomNumber, group.id()));
+            return new ChimeConnectionOptions(createMeetingResult, createAttendeeResult);
+        }
    }
 
     private ChimeMeeting createMeeting(int roomNumber) {
