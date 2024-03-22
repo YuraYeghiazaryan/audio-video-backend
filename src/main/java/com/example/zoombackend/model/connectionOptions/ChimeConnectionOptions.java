@@ -12,6 +12,6 @@ import lombok.EqualsAndHashCode;
 @Builder
 @AllArgsConstructor
 public class ChimeConnectionOptions extends ConnectionOptions {
-    private CreateMeetingResult meeting;
-    private CreateAttendeeResult attendee;
+    private CreateMeetingResult createMeetingResult;
+    private CreateAttendeeResult createAttendeeResult;
 }

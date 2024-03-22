@@ -1,6 +1,5 @@
 package com.example.zoombackend.service.audioVideo;
 
-import com.example.zoombackend.model.Group;
 import com.example.zoombackend.model.connectionOptions.ConnectionOptions;
 import com.example.zoombackend.model.connectionOptions.ZoomConnectionOptions;
 import io.jsonwebtoken.Jwts;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -55,10 +53,5 @@ public class ZoomService implements AudioVideoService {
     @Override
     public ConnectionOptions getConnectionOptions(int roomNumber, long groupId, String username) {
         return null;
-    }
-
-    @Override
-    public void audioVideoGroupsChanged(int roomNumber, List<Group> groups) {
-        /* BLANK */
     }
 }
