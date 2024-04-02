@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>zoomBackend</artifactId>
+    <artifactId>audio-video-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>zoomBackend</name>
-    <description>zoomBackend</description>
+    <name>audio-video-backend</name>
+    <description>audio-video-backend</description>
     <properties>
         <java.version>17</java.version>
     </properties>
