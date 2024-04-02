@@ -1,5 +1,6 @@
 package com.example.audioVideo.persistance.repository;
 
+import com.amazonaws.services.chimesdkmeetings.model.Attendee;
 import com.amazonaws.services.chimesdkmeetings.model.CreateAttendeeResult;
 import com.example.audioVideo.persistance.entity.ChimeMeeting;
 import com.example.audioVideo.persistance.entity.ChimeRoom;
@@ -47,27 +48,27 @@ public class ChimeMeetingRepository {
                 );
     }
 
-    public void addAttendee(int roomNumber, CreateAttendeeResult createAttendeeResult) {
+    public void addAttendee(int roomNumber, Attendee attendee) {
         ChimeRoom mainRoom = this.findRoom(roomNumber);
-        this.addAttendeeToRoom(mainRoom, createAttendeeResult);
+        this.addAttendeeToRoom(mainRoom, attendee);
     }
-    public void addAttendee(int roomNumber, long groupId, CreateAttendeeResult createAttendeeResult) {
+    public void addAttendee(int roomNumber, long groupId, Attendee attendee) {
         ChimeRoom subRoom = this.findRoom(roomNumber, groupId);
-        this.addAttendeeToRoom(subRoom, createAttendeeResult);
+        this.addAttendeeToRoom(subRoom, attendee);
     }
 
-    private void addAttendeeToRoom(ChimeRoom mainRoom, CreateAttendeeResult createAttendeeResult) {
+    private void addAttendeeToRoom(ChimeRoom mainRoom, Attendee attendee) {
         boolean exists = mainRoom
-                .getCreateAttendeeRequests()
+                .getAttendee()
                 .stream()
-                .anyMatch((CreateAttendeeResult foundCreateAttendeeResult) ->
+                .anyMatch((Attendee foundAattendee) ->
                         Objects.equals(
-                                foundCreateAttendeeResult.getAttendee().getExternalUserId(),
-                                createAttendeeResult.getAttendee().getExternalUserId()
+                                foundAattendee.getExternalUserId(),
+                                attendee.getExternalUserId()
                         )
                 );
         if (!exists) {
-            mainRoom.getCreateAttendeeRequests().add(createAttendeeResult);
+            mainRoom.getAttendee().add(attendee);
         }
     }
 
