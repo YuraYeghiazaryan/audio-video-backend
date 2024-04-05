@@ -4,6 +4,6 @@ import java.util.List;
 
 public record Groups(
         Group main,
-        List<Group> teamTalk,
-        Group privateTalk
+        Group privateTalk,
+        List<Team> teamTalk
 ) {}

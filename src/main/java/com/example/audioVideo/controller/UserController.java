@@ -26,8 +26,8 @@ public class UserController {
 
     @GetMapping("/login")
     @CrossOrigin
-    public User login(@RequestParam String username, @RequestParam Role role) {
-        return userService.login(username, role);
+    public User login(@RequestParam int roomNumber, @RequestParam String username, @RequestParam Role role) {
+        return userService.login(roomNumber, username, role);
     }
 
     @PostMapping("/{roomNumber}/user-video-state-changed")

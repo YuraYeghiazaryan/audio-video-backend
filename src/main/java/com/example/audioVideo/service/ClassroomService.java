@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ClassroomService {
@@ -36,15 +37,24 @@ public class ClassroomService {
                 .map((Map<Long, User> users) -> users.get(userId));
     }
 
-    public List<User> getUsersByIds(int roomNumber, Set<Long> userIds) {
+    public Optional<User> getUserByUsername(int roomNumber, String username) {
+        return Optional.ofNullable(classrooms.get(roomNumber))
+                .flatMap((Map<Long, User> users) ->
+                        users.values()
+                                .stream()
+                                .filter((User user) -> user.getUsername().equals(username)).findAny()
+                );
+    }
+
+    public Set<User> getUsersByIds(int roomNumber, Set<Long> userIds) {
         return Optional.ofNullable(classrooms.get(roomNumber))
                 .map((Map<Long, User> users) ->
                     users
                             .values()
                             .stream()
                             .filter((User user) -> userIds.contains(user.getId()))
-                            .toList()
+                            .collect(Collectors.toSet())
                 )
-                .orElse(new ArrayList<User>());
+                .orElse(new HashSet<>());
     }
 }

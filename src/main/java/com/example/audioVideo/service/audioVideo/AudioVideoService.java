@@ -6,8 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface AudioVideoService {
-    ConnectionOptions getConnectionOptions(int roomNumber, String username);
-    ConnectionOptions getConnectionOptions(int roomNumber, long groupId, String username);
+    ConnectionOptions getConnectionOptions(int roomNumber, String roomName, String username);
 
-    void createMeetings(int roomNumber, Groups groups);
+    void breakRoomIntoGroups(int roomNumber, Groups groups);
 }

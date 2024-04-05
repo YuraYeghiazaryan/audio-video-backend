@@ -5,9 +5,9 @@ import com.example.audioVideo.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,12 +19,23 @@ public class UserService {
         return classroomService.getUserById(roomNumber, userId);
     }
 
-    public List<User> getUsersByIds(int roomNumber, Set<Long> userIds) {
+    public Optional<User> getUserByUsername(int roomNumber, String username) {
+        return classroomService.getUserByUsername(roomNumber, username);
+    }
+
+    public Set<User> getUsersByIds(int roomNumber, Set<Long> userIds) {
         return classroomService.getUsersByIds(roomNumber, userIds);
     }
 
-    public User login(String username, Role role) {
-        return new User(username, role);
+    public Set<String> getUsernames(int roomNumber, Set<Long> userIds) {
+        return this.getUsersByIds(roomNumber, userIds)
+                .stream()
+                .map(User::getUsername)
+                .collect(Collectors.toSet());
+    }
+
+    public User login(int roomNumber, String username, Role role) {
+        return this.classroomService.addUserToClassroom(roomNumber, new User(username, role));
     }
 
     public void setUserVideoState(int roomNumber, long userId, boolean isOn) {
