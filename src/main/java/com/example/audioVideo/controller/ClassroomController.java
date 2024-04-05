@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
@@ -22,45 +23,45 @@ public class ClassroomController {
     private final ClassroomService classroomService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    @GetMapping("/{roomNumber}/users")
+    @GetMapping("/users")
     @CrossOrigin
-    public Set<User> getAllUsers(@PathVariable int roomNumber) {
+    public Set<User> getAllUsers(@RequestParam int roomNumber) {
         return classroomService.getAllUsers(roomNumber);
     }
 
-    @PostMapping("/{roomNumber}/game-mode")
+    @PostMapping("/game-mode")
     @CrossOrigin
-    public void gameModeStateChanged(@PathVariable int roomNumber, @RequestBody Object body) {
+    public void gameModeStateChanged(@RequestParam int roomNumber, @RequestBody Object body) {
         simpMessagingTemplate.convertAndSend("/topic/" + roomNumber + "/game-mode", body);
     }
 
-    @PostMapping("/{roomNumber}/team-talk")
+    @PostMapping("/team-talk")
     @CrossOrigin
-    public void teamTalkStateChanged(@PathVariable int roomNumber, @RequestBody Object body) {
+    public void teamTalkStateChanged(@RequestParam int roomNumber, @RequestBody Object body) {
         simpMessagingTemplate.convertAndSend("/topic/" + roomNumber + "/team-talk", body);
     }
 
-    @PostMapping("/{roomNumber}/private-talk")
+    @PostMapping("/private-talk")
     @CrossOrigin
-    public void privateTalkStateChanged(@PathVariable int roomNumber, @RequestBody Object body) {
+    public void privateTalkStateChanged(@RequestParam int roomNumber, @RequestBody Object body) {
         simpMessagingTemplate.convertAndSend("/topic/" + roomNumber + "/private-talk", body);
     }
 
-    @PostMapping("/{roomNumber}/add-user-to-private-talk")
+    @PostMapping("/add-user-to-private-talk")
     @CrossOrigin
-    public void addUserToPrivateTalk(@PathVariable int roomNumber, @RequestBody Object body) {
+    public void addUserToPrivateTalk(@RequestParam int roomNumber, @RequestBody Object body) {
         simpMessagingTemplate.convertAndSend("/topic/" + roomNumber + "/add-user-to-private-talk", body);
     }
 
-    @PostMapping("/{roomNumber}/remove-user-from-private-talk")
+    @PostMapping("/remove-user-from-private-talk")
     @CrossOrigin
-    public void removeUserFromPrivateTalk(@PathVariable int roomNumber, @RequestBody Object body) {
+    public void removeUserFromPrivateTalk(@RequestParam int roomNumber, @RequestBody Object body) {
         simpMessagingTemplate.convertAndSend("/topic/" + roomNumber + "/remove-user-from-private-talk", body);
     }
 
-    @PostMapping("/{roomNumber}/user-joined")
+    @PostMapping("/user-joined")
     @CrossOrigin
-    public void userAdded(@PathVariable int roomNumber, @RequestBody User user) {
+    public void userAdded(@RequestParam int roomNumber, @RequestBody User user) {
         User savedUser = classroomService.addUserToClassroom(roomNumber, user);
 
         simpMessagingTemplate.convertAndSend("/topic/" + roomNumber + "/user-joined", savedUser);
