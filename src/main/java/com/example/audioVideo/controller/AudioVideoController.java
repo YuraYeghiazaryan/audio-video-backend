@@ -21,16 +21,17 @@ public class AudioVideoController {
     private final AudioVideoService audioVideoService;
 
     public AudioVideoController(
-            @Qualifier("chimeService")
+//            @Qualifier("chimeService")
 //            @Qualifier("zoomService")
+            @Qualifier("openTokService")
             AudioVideoService audioVideoService
     ) {
         this.audioVideoService = audioVideoService;
     }
 
-    @PostMapping("/{roomNumber}/break-room-into-groups")
+    @PostMapping("break-room-into-groups")
     @CrossOrigin
-    public void breakRoomIntoGroups(@PathVariable int roomNumber, @RequestBody BreakRoomPayload payload) {
+    public void breakRoomIntoGroups(@RequestParam int roomNumber, @RequestBody BreakRoomPayload payload) {
         Groups groups = payload.groups();
         this.audioVideoService.breakRoomIntoGroups(roomNumber, groups);
     }
@@ -44,7 +45,7 @@ public class AudioVideoController {
             @RequestParam int roomNumber,
             @RequestParam String roomName,
             @RequestParam String username
-    ) {
+    ) throws Exception {
         return this.audioVideoService.getConnectionOptions(roomNumber, roomName, username);
     }
 }

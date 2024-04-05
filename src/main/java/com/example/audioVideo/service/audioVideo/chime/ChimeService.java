@@ -13,11 +13,11 @@ import com.example.audioVideo.model.Role;
 import com.example.audioVideo.model.Team;
 import com.example.audioVideo.model.User;
 import com.example.audioVideo.model.connectionOptions.ChimeConnectionOptions;
-import com.example.audioVideo.model.connectionOptions.ConnectionOptions;
-import com.example.audioVideo.persistance.entity.ChimeRoom;
-import com.example.audioVideo.persistance.repository.ChimeSessionRepository;
+import com.example.audioVideo.persistance.audioVideo.chime.entity.ChimeRoom;
+import com.example.audioVideo.persistance.audioVideo.chime.repository.ChimeSessionRepository;
 import com.example.audioVideo.service.UserService;
 import com.example.audioVideo.service.audioVideo.AudioVideoService;
+import com.example.audioVideo.service.audioVideo.AudioVideoUtilService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,10 +34,10 @@ public class ChimeService implements AudioVideoService {
     private final AmazonChimeSDKMeetings chimeClient;
     private final ChimeSessionRepository chimeSessionRepository;
     private final UserService userService;
-    private final ChimeUtilService chimeUtilService;
+    private final AudioVideoUtilService audioVideoUtilService;
 
     @Override
-    public ConnectionOptions getConnectionOptions(int roomNumber, String roomName, String username) {
+    public ChimeConnectionOptions getConnectionOptions(int roomNumber, String roomName, String username) {
         User user = userService.getUserByUsername(roomNumber, username).orElseThrow();
 
         ChimeRoom room = chimeSessionRepository
@@ -48,7 +48,7 @@ public class ChimeService implements AudioVideoService {
                     }
                     Meeting meeting = this.createMeeting(roomName);
 
-                    return chimeSessionRepository.createRoomForSession(roomNumber, roomName, new ChimeRoom(meeting, new HashMap<>()));
+                    return chimeSessionRepository.addRoomToSession(roomNumber, roomName, new ChimeRoom(meeting, new HashMap<>()));
                 });
 
         Meeting meeting = room.getMeeting();
@@ -66,14 +66,14 @@ public class ChimeService implements AudioVideoService {
     public void breakRoomIntoGroups(int roomNumber, Groups groups) {
         if (groups.main() != null) {
             Set<String> usernames = userService.getUsernames(roomNumber, groups.main().getUserIds());
-            String roomName = chimeUtilService.buildMainRoomName(roomNumber);
+            String roomName = audioVideoUtilService.buildMainRoomName(roomNumber);
 
             synchronizeRoomAttendees(roomNumber, roomName, usernames);
         }
 
         if (groups.privateTalk() != null) {
             Set<String> usernames = userService.getUsernames(roomNumber, groups.privateTalk().getUserIds());
-            String roomName = chimeUtilService.buildPrivateTalkRoomName(roomNumber);
+            String roomName = audioVideoUtilService.buildPrivateTalkRoomName(roomNumber);
 
             synchronizeRoomAttendees(roomNumber, roomName, usernames);
         }
@@ -81,7 +81,7 @@ public class ChimeService implements AudioVideoService {
         if (groups.teamTalk() != null) {
             groups.teamTalk().forEach((Team team) -> {
                 Set<String> usernames = userService.getUsernames(roomNumber, team.getUserIds());
-                String roomName = chimeUtilService.buildTeamTalkRoomName(roomNumber, team.getId());
+                String roomName = audioVideoUtilService.buildTeamTalkRoomName(roomNumber, team.getId());
 
                 synchronizeRoomAttendees(roomNumber, roomName, usernames);
             });
@@ -96,7 +96,7 @@ public class ChimeService implements AudioVideoService {
                 .orElseGet(() -> {
                     ChimeRoom newRoom = this.createMeetingWithAttendees(roomName, usernames);
 
-                    return chimeSessionRepository.createRoomForSession(roomNumber, roomName, newRoom);
+                    return chimeSessionRepository.addRoomToSession(roomNumber, roomName, newRoom);
                 });
 
         Map<String, Attendee> attendees = room.getAttendees().values().stream().filter((Attendee attendee) -> {

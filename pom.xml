@@ -44,6 +44,14 @@
             <version>1.12.647</version>
         </dependency>
 
+        <!-- Vonage OpenTok -->
+        <dependency>
+            <groupId>com.tokbox</groupId>
+            <artifactId>opentok-server-sdk</artifactId>
+            <version>4.13.2</version>
+        </dependency>
+
+
         <!-- jjwt -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
