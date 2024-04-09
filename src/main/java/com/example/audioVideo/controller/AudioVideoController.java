@@ -22,8 +22,8 @@ public class AudioVideoController {
 
     public AudioVideoController(
 //            @Qualifier("chimeService")
-//            @Qualifier("zoomService")
             @Qualifier("openTokService")
+//            @Qualifier("zoomService")
             AudioVideoService audioVideoService
     ) {
         this.audioVideoService = audioVideoService;
