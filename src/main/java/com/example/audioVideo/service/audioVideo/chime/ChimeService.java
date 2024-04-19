@@ -47,6 +47,7 @@ public class ChimeService implements AudioVideoService {
                         throw new RuntimeException("Non teacher user can't create meeting");
                     }
                     Meeting meeting = this.createMeeting(roomName);
+                    System.out.println("Meeting created " + meeting);
 
                     return chimeSessionRepository.createRoomForSession(roomNumber, roomName, new ChimeRoom(meeting, new HashMap<>()));
                 });

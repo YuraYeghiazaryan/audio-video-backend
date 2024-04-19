@@ -29,9 +29,9 @@ public class AudioVideoController {
         this.audioVideoService = audioVideoService;
     }
 
-    @PostMapping("/{roomNumber}/break-room-into-groups")
+    @PostMapping("/break-room-into-groups")
     @CrossOrigin
-    public void breakRoomIntoGroups(@PathVariable int roomNumber, @RequestBody BreakRoomPayload payload) {
+    public void breakRoomIntoGroups(@RequestParam int roomNumber, @RequestBody BreakRoomPayload payload) {
         Groups groups = payload.groups();
         this.audioVideoService.breakRoomIntoGroups(roomNumber, groups);
     }
