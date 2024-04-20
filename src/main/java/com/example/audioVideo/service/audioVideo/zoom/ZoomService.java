@@ -1,8 +1,8 @@
-package com.example.audioVideo.service.audioVideo;
+package com.example.audioVideo.service.audioVideo.zoom;
 
 import com.example.audioVideo.model.Groups;
-import com.example.audioVideo.model.connectionOptions.ConnectionOptions;
 import com.example.audioVideo.model.connectionOptions.ZoomConnectionOptions;
+import com.example.audioVideo.service.audioVideo.AudioVideoService;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class ZoomService implements AudioVideoService {
     private String sessionPasscode;
 
     @Override
-    public ConnectionOptions getConnectionOptions(int roomNumber, String roomName, String username) {
+    public ZoomConnectionOptions getConnectionOptions(int roomNumber, String roomName, String username) {
         Date currentDate = new Date();
 
         SecretKey hmacKey = new SecretKeySpec(secret.getBytes(), "HmacSHA256");

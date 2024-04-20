@@ -1,4 +1,4 @@
-package com.example.audioVideo.persistance.entity;
+package com.example.audioVideo.persistance.audioVideo.chime.entity;
 
 import java.util.HashMap;
 import java.util.Map;

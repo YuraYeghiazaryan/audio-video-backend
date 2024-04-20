@@ -22,8 +22,8 @@ public class AudioVideoController {
 
     public AudioVideoController(
             @Qualifier("chimeService")
-//            @Qualifier("zoomService")
 //            @Qualifier("openTokService")
+//            @Qualifier("zoomService")
             AudioVideoService audioVideoService
     ) {
         this.audioVideoService = audioVideoService;
@@ -45,7 +45,7 @@ public class AudioVideoController {
             @RequestParam int roomNumber,
             @RequestParam String roomName,
             @RequestParam String username
-    ) {
+    ) throws Exception {
         return this.audioVideoService.getConnectionOptions(roomNumber, roomName, username);
     }
 }

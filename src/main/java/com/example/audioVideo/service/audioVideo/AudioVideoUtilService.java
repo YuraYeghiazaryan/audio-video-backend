@@ -1,9 +1,9 @@
-package com.example.audioVideo.service.audioVideo.chime;
+package com.example.audioVideo.service.audioVideo;
 
 import org.springframework.stereotype.Service;
 
 @Service
-public class ChimeUtilService {
+public class AudioVideoUtilService {
 
     public String buildMainRoomName(int roomNumber) {
         return roomNumber + "_main";

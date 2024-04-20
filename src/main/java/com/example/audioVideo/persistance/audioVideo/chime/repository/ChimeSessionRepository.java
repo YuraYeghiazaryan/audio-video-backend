@@ -1,8 +1,8 @@
-package com.example.audioVideo.persistance.repository;
+package com.example.audioVideo.persistance.audioVideo.chime.repository;
 
 import com.amazonaws.services.chimesdkmeetings.model.Attendee;
-import com.example.audioVideo.persistance.entity.ChimeRoom;
-import com.example.audioVideo.persistance.entity.ChimeSession;
+import com.example.audioVideo.persistance.audioVideo.chime.entity.ChimeRoom;
+import com.example.audioVideo.persistance.audioVideo.chime.entity.ChimeSession;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import java.util.Optional;
 public class ChimeSessionRepository {
     private final Map<Integer, ChimeSession> sessions = new HashMap<>();
 
-    public ChimeRoom createRoomForSession(int roomNumber, String roomName, ChimeRoom room) {
+    public ChimeRoom addRoomToSession(int roomNumber, String roomName, ChimeRoom room) {
         ChimeSession session = sessions.get(roomNumber);
         if (session == null) {
             session = new ChimeSession();

@@ -1,4 +1,4 @@
-package com.example.audioVideo.persistance.entity;
+package com.example.audioVideo.persistance.audioVideo.chime.entity;
 
 import com.amazonaws.services.chimesdkmeetings.model.Attendee;
 import com.amazonaws.services.chimesdkmeetings.model.Meeting;

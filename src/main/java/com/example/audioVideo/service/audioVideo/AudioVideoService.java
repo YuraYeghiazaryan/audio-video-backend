@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface AudioVideoService {
-    ConnectionOptions getConnectionOptions(int roomNumber, String roomName, String username);
+    ConnectionOptions getConnectionOptions(int roomNumber, String roomName, String username) throws Exception;
 
     void breakRoomIntoGroups(int roomNumber, Groups groups);
 }
