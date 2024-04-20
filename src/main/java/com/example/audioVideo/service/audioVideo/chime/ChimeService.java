@@ -7,7 +7,9 @@ import com.amazonaws.services.chimesdkmeetings.model.CreateAttendeeRequestItem;
 import com.amazonaws.services.chimesdkmeetings.model.CreateMeetingRequest;
 import com.amazonaws.services.chimesdkmeetings.model.CreateMeetingWithAttendeesRequest;
 import com.amazonaws.services.chimesdkmeetings.model.CreateMeetingWithAttendeesResult;
+import com.amazonaws.services.chimesdkmeetings.model.GetMeetingRequest;
 import com.amazonaws.services.chimesdkmeetings.model.Meeting;
+import com.amazonaws.services.chimesdkmeetings.model.NotFoundException;
 import com.example.audioVideo.model.Groups;
 import com.example.audioVideo.model.Role;
 import com.example.audioVideo.model.Team;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -55,9 +58,30 @@ public class ChimeService implements AudioVideoService {
         Meeting meeting = room.getMeeting();
         Attendee attendee = room.getAttendees().get(username);
 
+        /* @TODO refactor, clean */
+        try {
+            this.getMeeting(meeting.getMeetingId());
+        } catch (NotFoundException exception) {
+            meeting = this.createMeeting(roomName);
+            chimeSessionRepository.addRoomToSession(roomNumber, roomName, new ChimeRoom(meeting, new HashMap<>()));
+            attendee = null;
+        }
+
         if (attendee == null) {
-            Attendee newAttendee = this.createAttendee(meeting, username);
-            attendee = chimeSessionRepository.addAttendeeToRoom(roomNumber, roomName, newAttendee);
+            try {
+                Attendee newAttendee = this.createAttendee(meeting, username);
+                attendee = chimeSessionRepository.addAttendeeToRoom(roomNumber, roomName, newAttendee);
+            } catch (Exception e) {
+                meeting = this.createMeeting(roomName);
+                chimeSessionRepository.addRoomToSession(
+                        roomNumber,
+                        roomName,
+                        new ChimeRoom(meeting, new HashMap<>())
+                );
+
+                Attendee newAttendee = this.createAttendee(meeting, username);
+                attendee = chimeSessionRepository.addAttendeeToRoom(roomNumber, roomName, newAttendee);
+            }
         }
 
         return new ChimeConnectionOptions(meeting, attendee);
@@ -102,15 +126,6 @@ public class ChimeService implements AudioVideoService {
 
         Map<String, Attendee> attendees = room.getAttendees().values().stream().filter((Attendee attendee) -> {
             boolean shouldBeRemoved = !usernames.contains(attendee.getExternalUserId());
-
-//            if (shouldBeRemoved) {
-//                DeleteAttendeeRequest deleteAttendeeRequest = new DeleteAttendeeRequest();
-//                deleteAttendeeRequest.setMeetingId(room.getMeeting().getMeetingId());
-//                deleteAttendeeRequest.setAttendeeId(attendee.getAttendeeId());
-//
-//                chimeClient.deleteAttendee(deleteAttendeeRequest);
-//            }
-
             return !shouldBeRemoved;
         }).collect(
                 Collectors.toMap(Attendee::getExternalUserId, Function.identity())
@@ -128,6 +143,13 @@ public class ChimeService implements AudioVideoService {
         });
 
         room.setAttendees(attendees);
+    }
+
+    private Meeting getMeeting(String meetingId) {
+        GetMeetingRequest request = new GetMeetingRequest();
+        request.setMeetingId(meetingId);
+
+        return chimeClient.getMeeting(request).getMeeting();
     }
 
     private Meeting createMeeting(String roomName) {
