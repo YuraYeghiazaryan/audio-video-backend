@@ -21,8 +21,8 @@ public class AudioVideoController {
     private final AudioVideoService audioVideoService;
 
     public AudioVideoController(
-            @Qualifier("chimeService")
-//            @Qualifier("openTokService")
+//            @Qualifier("chimeService")
+            @Qualifier("openTokService")
 //            @Qualifier("zoomService")
             AudioVideoService audioVideoService
     ) {
