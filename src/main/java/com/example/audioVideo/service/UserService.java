@@ -15,10 +15,6 @@ public class UserService {
 
     private final ClassroomService classroomService;
 
-    public Optional<User> getUserById(int roomNumber, long userId) {
-        return classroomService.getUserById(roomNumber, userId);
-    }
-
     public Optional<User> getUserByUsername(int roomNumber, String username) {
         return classroomService.getUserByUsername(roomNumber, username);
     }

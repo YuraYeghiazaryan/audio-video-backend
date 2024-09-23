@@ -7,7 +7,6 @@ import com.example.audioVideo.service.audioVideo.AudioVideoService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +21,8 @@ public class AudioVideoController {
 
     public AudioVideoController(
 //            @Qualifier("chimeService")
-            @Qualifier("openTokService")
-//            @Qualifier("zoomService")
+//            @Qualifier("openTokService")
+            @Qualifier("zoomService")
             AudioVideoService audioVideoService
     ) {
         this.audioVideoService = audioVideoService;

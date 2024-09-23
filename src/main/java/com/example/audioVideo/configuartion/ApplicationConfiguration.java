@@ -10,6 +10,6 @@ public class ApplicationConfiguration {
 
     @Bean
     public AmazonChimeSDKMeetings getAmazonChimeSDKMeetings() {
-        return AmazonChimeSDKMeetingsClient.builder().build();
+        return AmazonChimeSDKMeetingsClient.builder().withRegion("us-east-1").build();
     }
 }
